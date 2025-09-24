@@ -18,7 +18,7 @@ def display_welcome():
     print("This is a simple file manager to demonstrate")
     print("Python fundamentals: variables, expressions,")
     print("statements, and functions.")
-    print()
+    # TODO: Add a blank line after the welcome message
 
 
 def calculate_file_size():
@@ -44,8 +44,9 @@ def calculate_file_size():
         size_bytes = os.path.getsize(filename)
         
         # Calculate size in different units
-        size_kb = size_bytes / 1024
-        size_mb = size_kb / 1024
+        # TODO: Fix the code below to perform floating point division
+        size_kb = size_bytes // 1024
+        size_mb = size_kb // 1024
         
         # Display results
         print(f"\nFile: {filename}")
@@ -73,7 +74,7 @@ def get_user_choice():
     print()
     
     choice = input("Enter your choice (help/calc/info/quit): ").strip().lower()
-    return choice
+    # TODO: Add code to return the choice
 
 
 def display_help():
@@ -113,30 +114,62 @@ def display_info():
     print("=" * 40)
 
 
+# TODO - Set the keyword arguments such that;
+# 1. show_goodbye defaults to True
+# 2. goodbye_message defaults to "Thank you for using Python CLI File Manager!"
+# 3. invalid_choice_prefix defaults to "Invalid choice:"
+# 4. valid_commands defaults to "help, calc, info, quit"
+def process_user_command(choice, running, show_goodbye, goodbye_message, 
+                        invalid_choice_prefix, valid_commands):
+    """
+    Process a user command and return the updated running state.
+    
+    This function demonstrates keyword arguments and is designed to test
+    students' understanding of keyword-only arguments and default values.
+    
+    Args:
+        choice (str): The user's command choice
+        running (bool): Current state of the program loop
+        show_goodbye (bool, keyword-only): Whether to show goodbye message when quitting
+        goodbye_message (str, keyword-only): Custom goodbye message
+        invalid_choice_prefix (str, keyword-only): Prefix for invalid choice messages
+        valid_commands (str, keyword-only): String listing valid commands
+    
+    Returns:
+        bool: Updated running state (False if user chose to quit, True otherwise)
+    """
+    if choice == "help":
+        display_help()
+    elif choice == "calc":
+        calculate_file_size()
+    elif choice == "info":
+        display_info()
+    elif choice == "quit":
+        if show_goodbye:
+            print(f"\n{goodbye_message}")
+            print("Goodbye!")
+        return False
+    else:
+        print(f"\n{invalid_choice_prefix} '{choice}'")
+        print(f"Please enter one of: {valid_commands}")
+    
+    return running
+
+
 def main():
     """Main program loop."""
     # Display welcome message
-    display_welcome()
+    # TODO: Call the function to display the welcome message
     
     # Main command loop
-    running = True
+    # TODO: Initialize a variable to control the loop. Hint set running = True
     while running:
         try:
             choice = get_user_choice()
             
-            if choice == "help":
-                display_help()
-            elif choice == "calc":
-                calculate_file_size()
-            elif choice == "info":
-                display_info()
-            elif choice == "quit":
-                print("\nThank you for using Python CLI File Manager!")
-                print("Goodbye!")
-                running = False
-            else:
-                print(f"\nInvalid choice: '{choice}'")
-                print("Please enter one of: help, calc, info, quit")
+            # Use the extracted function to process the command
+            # This demonstrates calling a function with keyword arguments
+            running = process_user_command(choice, running)
                 
         except KeyboardInterrupt:
             print("\n\nProgram interrupted by user.")
